@@ -1,0 +1,8 @@
+<?php
+/**
+ * local configuration file
+ */
+
+$pdo_sn = 'mysql:host=HOST;dbname=DBNAME;charset=utf8';
+$db_user = 'USER';
+$db_pwd = 'PASS';
