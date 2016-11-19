@@ -94,6 +94,24 @@ class Reports extends DBCommunication {
     }
 
     /**
+     * Return stats per day - the parameter $date (which means "from date") is optional
+     *
+     * @param string $date
+     * @return stringArray
+     */
+    public function getScanStatsPerDay($date)
+    {
+        if (empty($date)) {
+            $sql = "SELECT * FROM dw_f_ip_d";
+            $result = $this->query($sql);
+        } else {
+            $sql = "SELECT * FROM dw_f_ip_d WHERE date >= :date";
+            $result = $this->query($sql, array(":date" => $date));
+        }
+        return $result;
+    }
+
+    /**
      * Report GetCurrentHostStatus
      *
      * Many rows as a result, one for each currently working host:
