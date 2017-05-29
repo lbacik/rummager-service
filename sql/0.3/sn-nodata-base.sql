@@ -61,7 +61,7 @@ CREATE TABLE `smtp` (
   KEY `checkTime` (`checkTime`) USING BTREE,
   KEY `ip` (`ip`) USING BTREE,
   CONSTRAINT `fk_check` FOREIGN KEY (`checkid`) REFERENCES `check` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=124028757 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci ROW_FORMAT=FIXED;
+) ENGINE=InnoDB AUTO_INCREMENT=124028757 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci; -- ROW_FORMAT=FIXED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
