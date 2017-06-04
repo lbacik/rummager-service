@@ -26,9 +26,7 @@
  * folders public & public_reports will be merged.
  */
 
-require_once '../config.php';
-require_once 'class.phpwsdl.php';
-require_once '../classes/logging.php';
-require_once '../classes/dbcommunication.php';
+require __DIR__ . '/../vendor/autoload.php';
+include '../config.php';
 
-PhpWsdl::RunQuickMode ( '../classes/reports.php' );
+PhpWsdl::RunQuickMode ( '../src/reports.php' );
