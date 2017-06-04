@@ -22,16 +22,16 @@ class RummagerTest extends PHPUnit_Extensions_Database_TestCase
 
     public static function setUpBeforeClass()
     {
-        global $dbname;
+        global $dbname, $dbhost, $pdo_sn_0, $db_user, $db_pwd;
 
-        $pdo = new PDO('mysql:host=localhost;', 'root', '');
+        $pdo = new PDO($pdo_sn_0, $db_user, $db_pwd);
         if($pdo->exec('USE ' . $dbname)) {
             $pdo->exec('DROP DATABASE ' . $dbname);
         }
         $pdo->exec('CREATE DATABASE ' . $dbname);
 
         chdir('../sql');
-        exec('mysql -u root ' . $dbname.' < db-source.sql');
+        exec('mysql -h ' . $dbhost . ' -u ' . $db_user . ' -p' . $db_pwd . ' ' . $dbname.' < db-source.sql');
         chdir('../tests');
     }
 
@@ -50,10 +50,11 @@ class RummagerTest extends PHPUnit_Extensions_Database_TestCase
 
     public function getConnection()
     {
-        global $dbname;
+        global $dbname, $pdo_sn, $db_user, $db_pwd;
+
         if ($this->conn === null) {
             try {
-                $pdo = new PDO('mysql:host=localhost;dbname='. $dbname, 'root', '');
+                $pdo = new PDO($pdo_sn, $db_user, $db_pwd);
                 $this->conn = $this->createDefaultDBConnection($pdo, $dbname);
             } catch (PDOException $e) {
                 echo $e->getMessage();
