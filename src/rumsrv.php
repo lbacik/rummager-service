@@ -52,14 +52,8 @@ class struct1 {
  *
  * @service Rummager
  */
-class Rummager extends DBCommunication {
-
-    /**
-     *
-     * @global type $pdo_sn
-     * @global type $db_user
-     * @global type $db_pwd
-     */
+class Rummager extends \Rumsrv\DBCommunication
+{
     public function __construct()
     {
         global $pdo_sn, $db_user, $db_pwd;

@@ -1,9 +1,9 @@
 <?php
 
 require_once '../config.php';
-require_once '../classes/dbcommunication.php';
-require_once '../classes/logging.php';
-require_once '../classes/rumsrv.php';
+require __DIR__ . '/../vendor/autoload.php';
+
+require_once '../src/rumsrv.php';
 
 $dbname = 'test';
 $pdo_sn = 'mysql:host=localhost;dbname='. $dbname .';charset=utf8';

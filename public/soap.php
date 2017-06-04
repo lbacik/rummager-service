@@ -15,9 +15,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-require_once '../config.php';
-require_once 'class.phpwsdl.php';
-require_once '../classes/logging.php';
-require_once '../classes/dbcommunication.php';
+require __DIR__ . '/../vendor/autoload.php';
+include '../config.php';
 
-PhpWsdl::RunQuickMode ( '../classes/rumsrv.php' );
+PhpWsdl::RunQuickMode ( '../src/rumsrv.php' );
