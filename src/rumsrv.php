@@ -52,14 +52,14 @@ class struct1 {
  *
  * @service Rummager
  */
-class Rummager extends DBCommunication {
+class Rummager extends \Rumsrv\DBCommunication
+{
+    const MODULE_SMTP = 2;
+    const MODULE_SENDER = 3;
 
-    /**
-     *
-     * @global type $pdo_sn
-     * @global type $db_user
-     * @global type $db_pwd
-     */
+    const MODULE_SMTP_NAME = 'smtp';
+    const MODULE_SENDER_NAME = 'smtp-sender';
+
     public function __construct()
     {
         global $pdo_sn, $db_user, $db_pwd;
@@ -154,16 +154,23 @@ class Rummager extends DBCommunication {
      * worker threads Worker_Manager process should start.
      *
      * @param integer $hostid
+     * @param string $workerType
      * @return integer
      */
-    public function getHostMaxThreads($hostid)
+    public function getHostMaxThreads($hostid, $workerType)
     {
-        $sql = "SELECT t FROM host WHERE id = ?";
+        switch($workerType) {
+            case self::MODULE_SMTP_NAME: $column = 't';
+                    break;
+            case self::MODULE_SENDER_NAME: $column = 's';
+        }
+
+        $sql = "SELECT ". $column ." FROM host WHERE id = ?";
 
         $result = 0;
         $n = $this->query($sql, array($hostid));
-        if(isset($n[0]['t'])) {
-                $result = $n[0]['t'];
+        if(isset($n[0][$column])) {
+                $result = $n[0][$column];
         }
         return $result;
     }
@@ -210,31 +217,31 @@ class Rummager extends DBCommunication {
      * @return integer check id
      */
     public function startNewCheck($nodeid, $moduleid) {
-        $sql = "SELECT id, ip
-                FROM ipv4class
-                WHERE status = 'TODO'
-                    AND id not IN
-                        (SELECT c.net
-                            FROM `check` c
-                                JOIN node n ON c.node = n.id
-                                JOIN ipv4class i ON c.net = i.id
-                            WHERE i.status = 'TODO'
-                                AND n.status = 'running')
-                LIMIT 1";
 
-        $result = 0;
+        $netid = null;
 
-        $tmp = $this->query($sql);
+        if ($moduleid === self::MODULE_SMTP) {
 
-        $netid = $tmp[0]['id'];
+            $sql = "SELECT id, ip
+                    FROM ipv4class
+                    WHERE status = 'TODO'
+                        AND id not IN
+                            (SELECT c.net
+                                FROM `check` c
+                                    JOIN node n ON c.node = n.id
+                                    JOIN ipv4class i ON c.net = i.id
+                                WHERE i.status = 'TODO'
+                                    AND n.status = 'running')
+                    LIMIT 1";
 
-        //syslog(LOG_NOTICE, "netid: " . $netid);
+            $tmp = $this->query($sql);
+            $netid = $tmp[0]['id'];
+        }
 
         $sql = "INSERT INTO `check` (node, net, module, create_time)
                 VALUES ( ? , ? , ? , NOW())";
 
         $result = $this->query($sql, array($nodeid, $netid, $moduleid), 'ID');
-        //syslog(LOG_NOTICE, "checkid: " . $result);
 
         return $result;
     }

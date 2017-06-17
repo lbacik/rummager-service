@@ -15,6 +15,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+namespace Rumsrv;
+
+use Rumsrv\Logging;
+
 /**
  * Simple class to handle all DB related communication - it allows to save some
  * code lines in service files :)
@@ -42,8 +46,8 @@ class DBCommunication {
      */
     public function __construct($pdo_sn, $db_user, $db_pwd)
     {
-        $this->db = new PDO($pdo_sn, $db_user, $db_pwd);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->db = new \PDO($pdo_sn, $db_user, $db_pwd);
+        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->logging = new Logging();
     }
 
@@ -88,11 +92,11 @@ class DBCommunication {
                     }
                     break;
                 case 'ASSOC':
-                    $result = $r->fetchAll(PDO::FETCH_ASSOC);
+                    $result = $r->fetchAll(\PDO::FETCH_ASSOC);
                     break;
             }
 
-        } catch (PDOException $ex) {
+        } catch (\PDOException $ex) {
             $this->log($ex->getCode() . " " . $ex->getMessage()
                     . " SQL: " . $sql . " PARAMS: " . implode(", ",$params));
             $result = false;
@@ -108,5 +112,10 @@ class DBCommunication {
      */
     protected function log($msg) {
         $this->logging->log($msg);
+    }
+
+    protected function getDB()
+    {
+        return $this->db;
     }
 }

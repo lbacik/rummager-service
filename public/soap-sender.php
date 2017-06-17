@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2015 Lukasz Bacik <mail@luka.sh>
+// Copyright (C) 2017 Lukasz Bacik <mail@luka.sh>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,18 +15,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-/**
- * The only reason why this file is not in the 'public' directory it is a lack
- * of client authentication by main service (public/soap.php) - it causes that
- * public/soap.php service should be "hidden" from users (for those for which this
- * raporting service is available), and the simplest way to achieve that is just to
- * use different URLs for as main (soap.php) as raporting services.
- *
- * After implementation of the authentication mechanism at public/soap.php service
- * folders public & public_reports will be merged.
- */
-
 require __DIR__ . '/../vendor/autoload.php';
 include '../config.php';
 
-PhpWsdl::RunQuickMode ( '../src/reports.php' );
+PhpWsdl::RunQuickMode ( '../src/SenderSOAP.php' );
+

@@ -1,3 +1,5 @@
 /nbproject
 config.local*.php
 *~
+vendor
+composer.phar

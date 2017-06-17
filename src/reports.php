@@ -28,7 +28,7 @@
  *
  * @service Reports
  */
-class Reports extends DBCommunication {
+class Reports extends \Rumsrv\DBCommunication {
 
     public function __construct() {
         global $pdo_sn, $db_user, $db_pwd;
